@@ -1,0 +1,391 @@
+text nowrap means that the text will  not break into 2nd line if the screen gets smaller
+items-center means it is vertically center
+
+
+// {
+//   "name": "gaming-website",
+//   "private": true,
+//   "version": "0.0.0",
+//   "type": "module",
+//   "scripts": {
+//     "dev": "vite",
+//     "build": "vite build",
+//     "lint": "eslint .",
+//     "preview": "vite preview"
+//   },
+//   "dependencies": {
+//     "@tailwindcss/vite": "^4.1.8",
+//     "boxicons": "^2.1.4",
+//     "react": "^19.1.0",
+//     "react-dom": "^19.1.0",
+//     "tailwindcss": "^4.1.8"
+//   },
+//   "devDependencies": {
+//     "@eslint/js": "^9.25.0",
+//     "@types/react": "^19.1.2",
+//     "@types/react-dom": "^19.1.2",
+//     "@vitejs/plugin-react": "^4.4.1",
+//     "eslint": "^9.25.0",
+//     "eslint-plugin-react-hooks": "^5.2.0",
+//     "eslint-plugin-react-refresh": "^0.4.19",
+//     "globals": "^16.0.0",
+//     "vite": "^6.3.5"
+//   }
+// }
+
+shadow was 0.2
+space-y-3 adds vertical space between each stat line
+inset-0 is tailwind's shorthand property to set top,left,right,bottom to 0
+
+
+
+ <div className="md:w-2/4 w-full md:h-full 
+        h-80 items-center justify-center overflow-hidden
+        ">
+            {selectedAvatar === "VIKI" ? (
+                <motion.div 
+                key="viki"
+                className="absolute inset-0"
+                initial={{x:"100%"}}
+                animate={{x:0}}
+                exit={{x:"-100%"}}
+                transition={{duration:0.5}}>
+                    <img src="public/images/VIKI.png" alt="viki-3d" />
+                </motion.div>    
+        ): (
+            <motion.div 
+            key="eva"
+                className="absolute inset-0"
+                initial={{x:"100%"}}
+                animate={{x:0}}
+                exit={{x:"-100%"}}
+                transition={{duration:0.5}}>
+                <img src="public/images/EVA.png" alt="eva-3d" />
+            </motion.div>
+        )}
+        </div>
+
+        animatepresence, mode=wait basically tells the sthing to wait till the thing is 
+        entirely gone. This creates a smoother animation effect
+
+
+        https://youtube.com/shorts/gU8sKj1lZcM?si=SATu-_TEluHxmhnA
+
+
+        ======================
+
+        custom cursor code
+
+        import React, {useState,useRef,useEffect} from "react";
+import { Star } from "lucide-react";
+import {motion,AnimatePresence} from "framer-motion";
+import Spline from "@splinetool/react-spline";
+const Characters = () => {
+
+    //custom cursor
+
+    function CustomCursor({isHovering3d}) {
+        const [position,setPosition] = useState({x:0,y:0})
+        const cursorRef = useRef(null); //will give direct access to the cursor
+        useEffect(() => {
+            const handleMouseMove = (e) => {
+                setPosition({x:e.clientX,y:e.clientY}); //update the cursor position to x and y co ordinates
+                }
+            document.addEventListener("mousemove",handleMouseMove); //add event listener to the document, so that it will track the cursor on entire document
+            return () => {
+                document.removeEventListener("mousemove",handleMouseMove); //cleanup function to remove the event listener
+            }
+        })      //this will let us track the mouse position
+
+        return(
+            <motion.div
+                ref={cursorRef}
+                className="fixed top-0 left-0 z-50 pointer-events-none 
+                mixed-blend-mode-difference"
+                animate={{
+                x:position.x - (isHovering3d ? 12:15),
+                y:position.y - (isHovering3d ? 12:15),
+                scale: isHovering3d ? 1.5 : 1,
+                }}
+                transition={{
+                type:"spring",
+                stiffness:500,
+                damping:28,
+                mass:0.5,}}>
+
+                    <motion.div className={`rounded-full 
+                        ${isHovering3d ? "bg-violet-500" : "bg-white"}`} 
+                        animate={{
+                            width: isHovering3d ? "24px" : "40px",
+                            height: isHovering3d ? "24px" : "40px",
+                        }}
+                        transition={{
+                            duration:0.2
+                        }} />
+
+                        {isHovering3d && (
+                            <motion.div 
+                            className="absolute inset-0 rounded-full bg-transition
+                            border border-violet-500 "
+                            initial={{scale:0.5, opacity:0}}
+                            animate={{scale:1,opacity:0.5}}
+                            transition = {{duration:1, repeat:Number.POSITIVE_INFINITY}}
+                            />
+                        )}
+
+                  
+
+            </motion.div>
+        )
+    }
+
+    const [selectedAvatar,setSeletedAvatar] = useState("VIKI");
+    const [cursorInModelArea,setCursorInModelArea] = useState(false);
+
+    //simplified avatar data
+
+    const Avatar = {
+        VIKI : {
+            name:"VIKI",
+            power: 80,
+            stable: 70,
+            penetrate: 30,
+            portable: 90,
+            stars:3,
+        },
+
+        EVA: {
+            name:"EVA",
+            power: 87,
+            stable: 40,
+            penetrate: 64,
+            portable: 25,
+            stars:4,
+        },
+    }
+
+    //get current avatar data
+
+    const currentAvatar = Avatar[selectedAvatar];
+
+    const handle3dMouseEnterArea = () => {
+        setCursorInModelArea(true);
+    }
+
+    const handle3dMouseLeaveArea = () => {
+        setCursorInModelArea(false);
+    }
+    return(
+      <div className="relative w-full h-screen overflow-hidden mb-[10%]">
+      
+      <CustomCursor isHovering3d={cursorInModelArea}/>
+        {/* section-title */}
+
+       <div className="relative pt-6 text-center ">
+        <h1 className="text-5xl font-bold tracking-widest 
+        md:-mb-14 mb-8" style={{textShadow:"0 0 10px rgba(255,255,255,0.7"}}>
+            FIGHTERS
+        </h1>
+       </div>
+         {/* main content area */}
+       <div className="relative z-10 flex md:flex-row flex-col items-center w-full h-full p-4 ">
+        {/* left side, avatar-info card */}
+        <section className="w-full md:w-2/4 flex flex-col md:ml-10">
+        {/* selected avactar info card */}
+        <div className="bg-gray-900/80
+        backdrop-blur-sm rounded-lg p-4 mb-4 border border-gray-800
+        shadow-[0_0_15px_rgba(167,139,250,0.5)]">
+            <h1 className="text-2xl font-semibold mb-2">{currentAvatar.name}</h1>
+        {/* avatar stats */}
+
+        <div className="space-y-3 mb-16">
+            {/* power stat */}
+
+            <div className="flex items-center">
+                <span className="w-24 text-gray-400"> Power</span>
+                <div className="bg-gray-800 flex-1 h-4 rounded-full overflow-hidden">
+                    <div className="h-full bg-gradient-to-r from-violet-600
+                     to-white"
+                     style={{width:`${currentAvatar.power}%`}}></div>
+                </div>
+                <span className="ml-2">{currentAvatar.power}</span>
+            </div>
+
+               {/* stable stat */}
+
+               <div className="flex items-center">
+                <span className="w-24 text-gray-400"> Stable</span>
+                <div className="bg-gray-800 flex-1 h-4 rounded-full overflow-hidden">
+                    <div className="h-full bg-gradient-to-r from-violet-600
+                     to-white"
+                     style={{width:`${currentAvatar.stable}%`}}></div>
+                </div>
+                <span className="ml-2">{currentAvatar.stable}</span>
+
+            </div>
+
+               {/* Penetrate stat */}
+
+               <div className="flex items-center">
+                <span className="w-24 text-gray-400"> Penetrate</span>
+                <div className="bg-gray-800 flex-1 h-4 rounded-full overflow-hidden">
+                    <div className="h-full bg-gradient-to-r from-violet-600
+                     to-white"
+                     style={{width:`${currentAvatar.penetrate}%`}}></div>
+                </div>
+                <span className="ml-2">{currentAvatar.penetrate}</span>
+
+            </div>
+
+               {/* Portable stat */}
+
+               <div className="flex items-center">
+                <span className="w-24 text-gray-400"> Portable</span>
+                <div className="bg-gray-800 flex-1 h-4 rounded-full overflow-hidden">
+                    <div className="h-full bg-gradient-to-r from-violet-600
+                     to-white"
+                     style={{width:`${currentAvatar.portable}%`}}></div>
+                </div>
+                <span className="ml-2">{currentAvatar.portable}</span>
+
+            </div>
+
+            
+           
+
+        </div>
+
+        {/* action buttons */}
+
+        <div className="flex gap-3">
+            <button  className="flex text-sm font-semibold bg-violet-900 rounded-sm
+            px-4 py-1 hover:opacity-70 cursor-pointer transition-all duration-300">Proficient</button>
+            <button className="flex text-sm font-semibold bg-violet-900 rounded-sm
+            px-4 py-1 hover:opacity-70 cursor-pointer transition-all duration-300">Redemption</button>
+        </div>
+
+        
+
+        </div>
+
+        {/* avatar seletion cards */}
+
+        <div className="grid grid-cols-2 gap-4">
+            {/* viki */}
+            <div className="relative bg-gray-900/70 
+            backdrop-blur-sm rounded-lg p-3 flex lg:flex-row flex-col 
+            justify-between px-12 items-center
+            cursor-pointer transition-all duration-300 border"
+            onClick={() => setSeletedAvatar("VIKI")}>
+                <div className="text-lg mb-2 "> VIKI</div>
+                {/* viki's visual image */}
+                <div className="w-20 h-20 bg-gray-800/50 flex 
+                justify-center items-center rounded-md mb-2">
+                    <img src="public/images/VIKI.png" alt="viki-image"/>
+                </div>
+
+                {/* star ratings */}
+
+                <div className="flex">
+                    {[...Array(3)].map((_,i) => (
+                        <Star key={i} className="w-4 h-4 fill-violet-400
+                        text-violet-500"/>
+                    ))}
+                </div>
+
+                {/* highlight for seleted avatar */}
+
+                {selectedAvatar === "VIKI" && (
+                    <div className="absolute inset-0 border-2 rounded-lg 
+                    pointer-events-none"></div>)}
+
+                
+
+            </div>
+            {/* eva */}
+            <div className="relative bg-gray-900/70 
+            backdrop-blur-sm rounded-lg p-3 flex lg:flex-row flex-col 
+            justify-between px-12 items-center
+            cursor-pointer transition-all duration-300 border"
+            onClick={() => setSeletedAvatar("EVA")}>
+                <div className="text-lg mb-2 "> EVA</div>
+                {/* eva's visual image */}
+                <div className="w-20 h-20 bg-gray-800/50 flex 
+                justify-center items-center rounded-md mb-2">
+                    <img src="public/images/EVA.png" alt="eva-image"/>
+                </div>
+
+                {/* star ratings */}
+
+                <div className="flex">
+                    {[...Array(4)].map((_,i) => (
+                        <Star key={i} className="w-4 h-4 fill-violet-400
+                        text-violet-500"/>
+                    ))}
+                </div>
+
+                {/* highlight for seleted avatar */}
+
+                {selectedAvatar === "EVA" && (
+                    <div className="absolute inset-0 border-2 rounded-lg 
+                    pointer-events-none"></div>)}
+
+                
+
+            </div>
+            
+        </div>
+
+
+            
+        </section>
+
+        {/* right-side 3d model */}
+
+        <div className="relative flex md:w-2/4 w-full md:h-full
+         h-80 items-center justify-center overflow-hidden"
+         onMouseEnter={handle3dMouseEnterArea}
+            onMouseLeave={handle3dMouseLeaveArea}
+
+         >
+ 
+ <AnimatePresence mode="wait">
+  {selectedAvatar === "VIKI" ? (
+    <motion.div 
+      key="viki"
+      className="absolute inset-0"
+      initial={{ x: "100%" }}
+      animate={{ x: 0 }}
+      exit={{ x: "-100%" }}
+      transition={{ duration: 0.5 }}
+    >
+      {/* <img src="/images/VIKI.png" alt="viki-3d" /> */}
+      <Spline scene="https://prod.spline.design/mMLnihcYSCFtunVh/scene.splinecode" />
+
+    </motion.div>
+  ) : (
+    <motion.div 
+      key="eva"
+      className="absolute inset-0"
+      initial={{ x: "100%" }}
+      animate={{ x: 0 }}
+      exit={{ x: "-100%" }}
+      transition={{ duration: 0.5 }}
+    >
+      {/* <img src="/images/EVA.png" alt="eva-3d" /> */}
+      <Spline scene="https://prod.spline.design/VAunc-SV2KSwqf6Y/scene.splinecode" />
+
+    </motion.div>
+  )}
+
+</AnimatePresence>
+</div>
+
+
+
+       </div>
+      </div>
+    )
+}
+
+export default Characters;
