@@ -25,7 +25,7 @@ const Hero = () => {
                     </button>
 
             <div className='flex  items-center gap-5 text-3xl font-extrabold text-gray-200'>
-                <img src='public/images/illu-logo.png' className='md:h-16 h-12' alt='logo'/> ZERO
+                <img src='/images/illu-logo.png' className='md:h-16 h-12' alt='logo'/> ZERO
             </div>
 
 
