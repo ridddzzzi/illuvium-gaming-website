@@ -100,7 +100,7 @@ const Arena = () => {
           </div>
            {/* card-6 bottom large card */}
           <div className='relative overflow-hidden rounded-3xl border border-white  aspect-[16/9]
-          md:col-span-2 transfor transition-transform duration-300 hover:scale-[1.02]'>
+          md:col-span-2 transform transition-transform duration-300 hover:scale-[1.02]'>
             <img src='/images/bento-card5.png'/>
 
             <button className='absolute bottom-0 h-16 w-full text-2xl font-bold hover:text-yellow-400 cursor-pointer transition-all duration-300 text-nowrap'>

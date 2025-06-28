@@ -4,7 +4,7 @@ const Hero = () => {
     return (
       <>
       <main className='relative w-full h-screen overflow-hidden flex justify-center mb-[10%]'>
-        <video src='public/videos/hero.mp4' 
+        <video src='/videos/hero.mp4' 
         autoPlay
          loop
           muted playsInline
@@ -12,7 +12,7 @@ const Hero = () => {
         </video>
 
         <div className='absolute bottom-[15%] flex flex-col items-center gap-5 '>
-            <img src='public/images/illu-text.png' alt='illu-text'
+            <img src='/images/illu-text.png' alt='illu-text'
             className='md:w-[30rem] w-[20rem]'/>
             <h1 className='md:text-2xl text-xl font-bold'>
                 Explore,Capture,Conquer

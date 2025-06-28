@@ -92,7 +92,7 @@ const Characters = () => {
 
                 {/* avatar image */}
                 <div className="w-20 h-20 bg-gray-800/50 flex justify-center items-center rounded-md mb-2">
-                  <img src={`public/images/${name}.png`} alt={`${name}-image`} />
+                  <img src={`/images/${name}.png`} alt={`${name}-image`} />
                 </div>
 
                 {/* star ratings */}
